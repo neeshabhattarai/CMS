@@ -3,6 +3,15 @@ const express = require("express");
 const Product = require("../model/product");
 
 const router = express.Router();
+router.use(async (req, res, next) => {
+  try {
+    await sequelize.authenticate();
+    next();
+  } catch (err) {
+    console.error("DB connection error:", err);
+    res.status(500).json({ error: "Database connection failed" });
+  }
+});
 
 router.post("/", async (req, res) => {
   try {

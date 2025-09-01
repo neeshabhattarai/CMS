@@ -18,6 +18,6 @@ app.get("/", (req, res) => {
 });
 
 
-sequelize.sync();
+
 
 module.exports = app; 
