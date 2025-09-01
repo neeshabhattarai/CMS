@@ -1,8 +1,9 @@
-
 const express = require("express");
 const Product = require("../model/product");
+const sequelize = require("../model/database"); // <-- needed!
 
 const router = express.Router();
+
 router.use(async (req, res, next) => {
   try {
     await sequelize.authenticate();
