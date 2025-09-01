@@ -6,6 +6,11 @@ const productRoute = require("./api/productroute"); // keep as is
 const dotenv = require("dotenv");
 
 dotenv.config();
+app.get('/',(req,res)=>{
+  res.json({
+    message:"hello working"
+  })
+})
 
 app.use(cors());
 app.use(express.urlencoded({ extended: false }));
@@ -13,9 +18,6 @@ app.use(express.json());
 
 app.use("/product", productRoute);
 
-app.get("/", (req, res) => {
-  res.json({ message: "working" });
-});
 
 
 
