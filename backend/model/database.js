@@ -1,4 +1,5 @@
-const {Sequelize}=require("sequelize");
+const { Sequelize } = require("sequelize");
+const mysql2 = require("mysql2"); // ensure it is imported
 
 const sequelize = new Sequelize(
   process.env.DB_NAME,
@@ -8,8 +9,15 @@ const sequelize = new Sequelize(
     host: process.env.DB_HOST,
     dialect: "mysql",
     port: process.env.DB_PORT || 3306,
-    logging: console.log,
+    dialectModule: mysql2, // explicitly tell Sequelize to use mysql2
+    logging: false,
+    dialectOptions: {
+      ssl: {
+        require: true,
+        rejectUnauthorized: false,
+      },
+    },
   }
 );
 
-module.exports=sequelize
+module.exports = sequelize;
