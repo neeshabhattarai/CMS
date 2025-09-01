@@ -7,10 +7,12 @@ export default function AddProduct() {
     register,
     handleSubmit,
     formState: { errors },
-    clearErrors,
     reset,
-    resetField,
-  } = useForm();
+  } = useForm({
+    defaultValues: {
+      updated_by: "admin", 
+    },
+  });
 
   const onSubmit = async (data) => {
     await fetch("http://localhost:4000/product", {
@@ -20,16 +22,17 @@ export default function AddProduct() {
         "content-type": "application/json",
       },
     });
-    reset();
+    reset({ created_by: "admin" }); 
   };
 
   return (
-    <div className="max-w-lg mx-auto  mt-10 p-6 bg-white rounded-xl shadow-md">
+    <div className="max-w-lg mx-auto mt-10 p-6 bg-white rounded-xl shadow-md">
       <h2 className="text-2xl font-semibold mb-6 text-center">
         Add New Product
       </h2>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+       
         <div>
           <label
             className="block text-sm font-medium mb-1"
@@ -42,7 +45,7 @@ export default function AddProduct() {
             type="text"
             {...register("product_name", {
               required: "Product name is required",
-              min: { value: 3, message: "It should be greater than 3" },
+              minLength: { value: 3, message: "It should be greater than 3" },
             })}
             className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 ${
               errors.product_name ? "border-red-500" : "border-gray-300"
@@ -55,6 +58,7 @@ export default function AddProduct() {
           )}
         </div>
 
+        
         <div>
           <label
             className="block text-sm font-medium mb-1"
@@ -70,6 +74,7 @@ export default function AddProduct() {
           />
         </div>
 
+ 
         <div>
           <label className="block text-sm font-medium mb-1" htmlFor="status">
             Status
@@ -85,6 +90,25 @@ export default function AddProduct() {
           </select>
         </div>
 
+      
+        <div>
+          <label
+            className="block text-sm font-medium mb-1"
+            htmlFor="updated_by"
+          >
+            Updated By
+          </label>
+          <input
+            id="updated_by"
+            type="text"
+            {...register("created_by")}
+            defaultValue="admin"
+            readOnly 
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-100 focus:outline-none"
+          />
+        </div>
+
+    
         <div className="text-center">
           <button
             type="submit"

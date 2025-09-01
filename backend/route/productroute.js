@@ -13,7 +13,7 @@ router.post("/", async (req, res) => {
       product_name,
       product_desc,
       status,
-      created_by:"admin",
+      created_by,
       updated_by: created_by 
     });
 

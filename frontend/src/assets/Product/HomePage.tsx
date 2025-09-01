@@ -1,60 +1,26 @@
 import React, { useEffect, useState } from "react";
-import EditProductModal from "./EditProduct";
 
 export default function HomePage() {
   const [list, setList] = useState([]);
-  const [editingProduct, setEditingProduct] = useState(null);
 
-  // Fetch live products
   useEffect(() => {
     const fetched = async () => {
       try {
         const res = await fetch("http://localhost:4000/product/live");
         const data = await res.json();
-        setList(data);
+
+        // Sort products by created_at (latest first)
+        const sorted = data.sort(
+          (a, b) => new Date(b.created_at) - new Date(a.created_at)
+        );
+
+        setList(sorted);
       } catch (error) {
         console.error("Error fetching products:", error);
       }
     };
     fetched();
-  }, [editingProduct]);
-
-  // Save changes
-  const handleSave = async (id, data) => {
-    try {
-      await fetch(`http://localhost:4000/product/${id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      });
-
-      setList((prev) =>
-        prev.map((item) =>
-          item.product_id === id ? { ...item, ...data } : item
-        )
-      );
-    } catch (error) {
-      console.error("Error updating product:", error);
-    }
-  };
-
-  // Delete product
-  const handleDelete = async (id) => {
-    if (!window.confirm("Are you sure you want to delete this product?"))
-      return;
-
-    try {
-      await fetch(`http://localhost:4000/product/${id}`, {
-        method: "DELETE",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ updated_by: "admin" }),
-      });
-
-      setList(list.filter((item) => item.product_id !== id));
-    } catch (error) {
-      console.error("Error deleting product:", error);
-    }
-  };
+  }, []);
 
   if (!list || list.length === 0) {
     return <h1 className="text-center mt-10 text-gray-600">No data found</h1>;
@@ -69,11 +35,32 @@ export default function HomePage() {
             key={item.product_id}
             className="p-4 bg-white rounded-xl shadow flex justify-between items-center"
           >
-            <div>
+            {/* Left Side - All Details */}
+            <div className="text-left">
               <h2 className="text-xl font-semibold">{item.product_name}</h2>
-              <p className="text-gray-600">{item.product_desc}</p>
+              <p className="text-gray-700">{item.product_desc}</p>
+
+              <div className="mt-1 space-y-0.5">
+                <p className="text-xs text-gray-500">
+                  Created At:{" "}
+                  {new Date(item.created_at).toLocaleString("en-US", {
+                    year: "numeric",
+                    month: "short",
+                    day: "numeric",
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })}
+                </p>
+                <p className="text-xs text-gray-500">
+                  Product ID: {item.product_id}
+                </p>
+              </div>
+            </div>
+
+            {/* Right Side - Status */}
+            <div className="ml-4">
               <span
-                className={`inline-block mt-2 px-3 py-1 rounded-full text-sm font-medium ${
+                className={`px-3 py-1 rounded-full text-sm font-medium ${
                   item.status === "Published"
                     ? "bg-green-100 text-green-700"
                     : item.status === "Draft"
@@ -84,32 +71,9 @@ export default function HomePage() {
                 {item.status}
               </span>
             </div>
-            <div className="flex gap-2">
-              <button
-                onClick={() => setEditingProduct(item)}
-                className="px-4 py-2 !bg-blue-500 text-white rounded-lg hover:bg-blue-600"
-              >
-                Edit
-              </button>
-              <button
-                onClick={() => handleDelete(item.product_id)}
-                className="px-4 py-2 !bg-red-500 text-white rounded-lg hover:bg-red-600"
-              >
-                Delete
-              </button>
-            </div>
           </div>
         ))}
       </div>
-
-      {/* Popup Modal */}
-      {editingProduct && (
-        <EditProductModal
-          product={editingProduct}
-          onClose={() => setEditingProduct(null)}
-          onSave={handleSave}
-        />
-      )}
     </div>
   );
 }
