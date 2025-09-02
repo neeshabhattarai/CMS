@@ -15,13 +15,14 @@ export default function AddProduct() {
   });
 
   const onSubmit = async (data) => {
-    await fetch("http://localhost:4000/product", {
+    await fetch("https://cms-f84h.vercel.app/product", {
       method: "POST",
       body: JSON.stringify(data),
       headers: {
         "content-type": "application/json",
       },
     });
+    reset()
     reset({ created_by: "admin" }); 
   };
 
