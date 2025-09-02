@@ -11,7 +11,9 @@ app.get('/',(req,res)=>{
     message:"hello working"
   })
 })
-
+sequelize.sync({ alter: true })
+  .then(() => console.log("✅ Tables synced"))
+  .catch(err => console.error("❌ Table sync error:", err));
 app.use(cors());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());

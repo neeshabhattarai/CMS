@@ -1,15 +1,21 @@
 
-const sequelize = require("../model/database");
+const mysql = require("mysql2");
 
- async function handler(req, res) {
-  try {
-    await sequelize.authenticate();
-    const [rows] = await sequelize.query("SELECT NOW() as time");
-    console.log("worked")
-    res.status(200).json({ ok: true, time: rows[0].time });
-  } catch (err) {
-    console.log(err);
-    res.status(500).json({ error: err.message });
+const connection = mysql.createConnection({
+  host: "switchyard.proxy.rlwy.net",
+  port: 49160,
+  user: "root",
+  password: "JUygJCnYYOcXpupjePnyuhieDMThTWFJ",
+  database: "railway",
+  ssl: { rejectUnauthorized: false } // try removing this if it fails
+});
+
+connection.connect(err => {
+  if (err) {
+    console.error("❌ Connection failed:", err.message);
+  } else {
+    console.log("✅ Connected to Railway MySQL!");
+    connection.end();
   }
-}
-module.exports=handler
+});
+
