@@ -13,7 +13,9 @@ router.use(async (req, res, next) => {
     next();
   } catch (err) {
     console.error("DB connection error:", err);
-    res.status(500).json({ error: "Database connection failed" });
+    res.status(500).json({ error: "Database connection failed",
+      err
+     });
   }
 });
 router.post("/", async (req, res) => {

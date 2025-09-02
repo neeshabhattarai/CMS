@@ -1,5 +1,8 @@
 const { Sequelize } = require("sequelize");
 const mysql2 = require("mysql2"); // ensure it is imported
+const dotenv = require("dotenv");
+
+dotenv.config();
 
 const sequelize = new Sequelize(
   process.env.DB_NAME,
