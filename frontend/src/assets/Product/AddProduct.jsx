@@ -17,7 +17,7 @@ export default function AddProduct() {
   const navigate=useNavigate();
 
   const onSubmit = async (data) => {
-    await fetch("https://cms-xano.vercel.app/product", {
+    await fetch("https://testingp-eight.vercel.app/product", {
       method: "POST",
       body: JSON.stringify(data),
       headers: {

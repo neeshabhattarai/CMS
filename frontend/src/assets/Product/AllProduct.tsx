@@ -10,7 +10,7 @@ export default function AllProduct() {
   useEffect(() => {
     const fetched = async () => {
       try {
-        const res = await fetch("https://cms-xano.vercel.app/product/");
+        const res = await fetch("https://testingp-eight.vercel.app/product/");
         const data = await res.json();
         setList(data);
       } catch (error) {
@@ -22,7 +22,7 @@ export default function AllProduct() {
 
   const handleSave = async (id, data) => {
     try {
-      await fetch(`https://cms-f84h.vercel.app/product/${id}`, {
+      await fetch(`https://testingp-eight.vercel.app/product/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
@@ -43,7 +43,7 @@ export default function AllProduct() {
       return;
 
     try {
-      await fetch(`https://cms-f84h.vercel.app/product/${id}`, {
+      await fetch(`https://testingp-eight.vercel.app/product/${id}`, {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ updated_by: "admin" }),

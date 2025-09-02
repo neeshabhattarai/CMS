@@ -6,7 +6,9 @@ export default function HomePage() {
   useEffect(() => {
     const fetched = async () => {
       try {
-        const res = await fetch("https://cms-xano.vercel.app/product/live");
+        const res = await fetch(
+          "https://testingp-eight.vercel.app/product/live"
+        );
         const data = await res.json();
 
         // Sort products by created_at (latest first)
