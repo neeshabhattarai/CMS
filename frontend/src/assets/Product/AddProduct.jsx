@@ -1,4 +1,5 @@
 import React from "react";
+import {useNavigate} from "react-router-dom"
 import { useForm } from "react-hook-form";
 import "../../App.css";
 
@@ -13,9 +14,10 @@ export default function AddProduct() {
       updated_by: "admin", 
     },
   });
+  const navigate=useNavigate();
 
   const onSubmit = async (data) => {
-    await fetch("https://cms-f84h.vercel.app/product", {
+    await fetch("https://cms-xano.vercel.app/product", {
       method: "POST",
       body: JSON.stringify(data),
       headers: {
@@ -24,6 +26,7 @@ export default function AddProduct() {
     });
     reset()
     reset({ created_by: "admin" }); 
+    navigate("/all")
   };
 
   return (

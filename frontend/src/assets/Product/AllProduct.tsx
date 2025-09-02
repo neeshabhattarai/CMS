@@ -10,7 +10,7 @@ export default function AllProduct() {
   useEffect(() => {
     const fetched = async () => {
       try {
-        const res = await fetch("https://cms-f84h.vercel.app/product/");
+        const res = await fetch("https://cms-xano.vercel.app/product/");
         const data = await res.json();
         setList(data);
       } catch (error) {
