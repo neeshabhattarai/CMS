@@ -4,18 +4,27 @@ const router = express.Router();
 
 const sequelize = require("../model/database");
 console.log("Route loaded, sequelize imported");
+let isSynced = false;
 
+// Middleware: authenticate DB and sync table once per function instance
 router.use(async (req, res, next) => {
-  console.log("Authenticating DB...");
   try {
     await sequelize.authenticate();
     console.log("DB connected");
+
+    if (!isSynced) {
+      await sequelize.sync({ force: false }); // create table if missing
+      console.log("Database synced!");
+      isSynced = true;
+    }
+
     next();
   } catch (err) {
-    console.error("DB connection error:", err);
-    res.status(500).json({ error: "Database connection failed",
+    console.error("DB connection/sync error:", err);
+    res.status(500).json({
+      error: "Database connection failed",
       err
-     });
+    });
   }
 });
 router.post("/", async (req, res) => {

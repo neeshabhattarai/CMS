@@ -2,7 +2,7 @@ const cors = require("cors");
 const express = require("express");
 const app = express();
 const productRoute = require("./api/productroute"); // keep as is
-
+const sequelize=require("./model/database")
 const dotenv = require("dotenv");
 
 dotenv.config();
